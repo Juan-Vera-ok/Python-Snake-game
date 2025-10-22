@@ -23,6 +23,12 @@ screen = pg.display.set_mode([WINDOW] * 2)
 clock = pg.time.Clock()
 dirs = {pg.K_w: 1, pg.K_s: 1, pg.K_a: 1, pg.K_d: 1}
 
+# Cargar la imagen de fondo
+# Asegurate de que el archivo exista en la misma carpeta que este script
+background = pg.image.load("KAN.jpg").convert()
+# Escalar la imagen de fondo al tamaño de la ventana, si es necesario
+background = pg.transform.scale(background, (WINDOW, WINDOW))
+
 running = True
 while running:
     for event in pg.event.get():
@@ -42,7 +48,8 @@ while running:
                 snake_dir = (TILE_SIZE, 0)
                 dirs = {pg.K_w: 1, pg.K_s: 1, pg.K_a: 0, pg.K_d: 1}
 
-    screen.fill("black")
+    # dibujar el fondo primero
+    screen.blit(background, (0, 0))
 
     # check borders and self-eating
     self_eating = pg.Rect.collidelist(snake, segments[:-1]) != -1
@@ -57,8 +64,8 @@ while running:
         length += 1
 
     # draw food and snake
-    pg.draw.rect(screen, "red", food)
-    [pg.draw.rect(screen, "green", segment) for segment in segments]
+    pg.draw.rect(screen, "black", food)
+    [pg.draw.rect(screen, "pink", segment) for segment in segments]
 
     # move snake
     time_now = pg.time.get_ticks()
